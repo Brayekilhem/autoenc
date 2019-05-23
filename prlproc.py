@@ -86,31 +86,31 @@ def autoencoder(encoding_dim, hidden_units):
     history_dict = history.history
 
     # save the values in excel files
-    filename = 'resultdeep/trainloss_{}_{}_{}.csv'.format(file,encoding_dim,hidden_units)
+    filename = 'resultdeep/trainloss_{}_{}.csv'.format(file,hidden_units)
     loss_history = np.array(history1.losses_train)
     np.savetxt(filename, loss_history, delimiter=",")
 
-    filename = 'resultdeep/valloss_%s.csv'%file
+    filename = 'resultdeep/valloss_{}_{}.csv'.format(file,hidden_units)
     loss_history1 = np.array(history1.losses_val)
     np.savetxt(filename, loss_history1, delimiter=",")
 
     # Plotting the training and validation loss
     loss_values=history_dict['loss']
     val_loss_values=history_dict['val_loss']
-    epochs=range(1,len(loss_values)+1)
-    plt.plot(epochs, loss_values,'bo',label='Training loss')
-    plt.plot(epochs,val_loss_values,'r',label ='Validation loss')
-    plt.title('Training and validation loss')
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss')
-    plt.legend()
-    plt.show()
+    # epochs=range(1,len(loss_values)+1)
+    # plt.plot(epochs, loss_values,'bo',label='Training loss')
+    # plt.plot(epochs,val_loss_values,'r',label ='Validation loss')
+    # plt.title('Training and validation loss')
+    # plt.xlabel('Epochs')
+    # plt.ylabel('Loss')
+    # plt.legend()
+    # plt.show()
 
 if __name__ == '__main__':
     import multiprocessing
 
-    encoding_dim =[32, 16]
-    hidden_units=[60,50]
+    encoding_dim =[32, 25, 16]
+    hidden_units=[60, 50]
 
     all_args = list()
     for dim in encoding_dim:
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     print('number of settings: {}'.format(len(all_args)))
 
     # on the servers, 12 is a good number for the number of parallel processes
-    number_of_parallel_processes = 2
+    number_of_parallel_processes = 12
     pool = multiprocessing.Pool(number_of_parallel_processes)
     all_results = pool.starmap(autoencoder, all_args)
 
